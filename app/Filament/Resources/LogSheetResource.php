@@ -47,10 +47,9 @@ class LogSheetResource extends Resource
                 Tables\Columns\TextColumn::make('filepath')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('year')->sortable()
-                    ->searchable(),
-
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('month')->sortable()
-                    ->searchable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
