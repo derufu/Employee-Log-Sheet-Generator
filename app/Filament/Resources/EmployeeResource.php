@@ -9,13 +9,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Navigation\NavigationItem;
-use Spatie\Image\Image;
-use Spatie\Image\Manipulations;
-use App\Filament\Pages\Settings;
-use App\Filament\Resources\UserResource;
-use Filament\Facades\Filament;
-use Filament\Navigation\NavigationBuilder;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class EmployeeResource extends Resource
 {
@@ -88,8 +83,12 @@ class EmployeeResource extends Resource
                 Forms\Components\FileUpload::make('image')
                     ->label('Profile Image')
                     ->image()
-                    ->directory('employee-images')
-                    ->maxSize(1024), // Max size in KB
+                    ->disk('public') // Ensure it uses the correct disk
+                    ->directory('employee-images') // Uploads to storage/app/public/employee-images
+                    ->maxSize(1024) // Limit file size in KB
+                    ->preserveFilenames() // Prevents Livewire renaming issues
+                    ->rules(['image', 'mimes:jpeg,png,jpg,gif', 'max:1024'])
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/gif']) // Explicit file types
             ]);
     }
 
@@ -97,6 +96,10 @@ class EmployeeResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('image')
+                    ->label('Profile Image')
+                    ->disk('public')
+                    ->size(100),
                 Tables\Columns\TextColumn::make('employee_id')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('first_name')

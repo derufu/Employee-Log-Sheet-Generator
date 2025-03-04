@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Employee extends Model
 {
@@ -22,7 +23,8 @@ class Employee extends Model
         'status',
         'emergency_contact_name',
         'emergency_contact_number',
-        'emergency_address'
+        'emergency_address',
+        'image'
     ];
 
     public function workFromHomes()
@@ -39,5 +41,16 @@ class Employee extends Model
     {
         $middleInitial = $this->middle_name ? strtoupper(substr($this->middle_name, 0, 1)) . '.' : '';
         return "{$this->first_name} {$middleInitial} {$this->last_name}";
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($employee) {
+            if (request()->hasFile('image')) {
+                $employee->image = request()->file('image')->store('employee-images', 'public');
+            }
+        });
     }
 }
