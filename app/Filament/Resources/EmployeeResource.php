@@ -21,7 +21,7 @@ class EmployeeResource extends Resource
 {
     protected static ?string $model = Employee::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
     public static function form(Form $form): Form
     {
@@ -110,8 +110,7 @@ class EmployeeResource extends Resource
                 Tables\Columns\TextColumn::make('contact_number')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('position_type')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

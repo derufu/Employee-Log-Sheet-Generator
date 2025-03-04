@@ -16,7 +16,10 @@ class WorkFromHomeResource extends Resource
 {
     protected static ?string $model = WorkFromHome::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-home-modern';
+
+    protected static ?string $navigationGroup = 'Leave Management';
+
 
     public static function form(Form $form): Form
     {
