@@ -105,7 +105,7 @@ class EmployeeResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
                     ->circular()
-                    ->size(100) // Adjust the size to make it larger
+                    ->size(40) // Adjust the size to make it larger
                     ->extraAttributes(['loading' => 'lazy']) // Enables lazy loading
                     ->defaultImageUrl('https://www.davaocity.gov.ph/wp-content/themes/dccustomtheme/public/images/site-logo-2.png'),
                 Tables\Columns\TextColumn::make('employee_id')
