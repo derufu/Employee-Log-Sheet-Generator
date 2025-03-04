@@ -22,6 +22,15 @@ class EmployeeResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\FileUpload::make('image')
+                    ->label('Profile Image')
+                    ->image()
+                    ->disk('public') // Ensure it uses the correct disk
+                    ->directory('employee-images') // Uploads to storage/app/public/employee-images
+                    ->maxSize(1024) // Limit file size in KB
+                    ->preserveFilenames() // Prevents Livewire renaming issues
+                    ->rules(['image', 'mimes:jpeg,png,jpg,gif', 'max:1024'])
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/gif']),
                 Forms\Components\TextInput::make('first_name')
                     ->required()
                     ->maxLength(255),
@@ -80,15 +89,6 @@ class EmployeeResource extends Resource
                 Forms\Components\TextInput::make('emergency_address')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\FileUpload::make('image')
-                    ->label('Profile Image')
-                    ->image()
-                    ->disk('public') // Ensure it uses the correct disk
-                    ->directory('employee-images') // Uploads to storage/app/public/employee-images
-                    ->maxSize(1024) // Limit file size in KB
-                    ->preserveFilenames() // Prevents Livewire renaming issues
-                    ->rules(['image', 'mimes:jpeg,png,jpg,gif', 'max:1024'])
-                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/gif']) // Explicit file types
             ]);
     }
 
