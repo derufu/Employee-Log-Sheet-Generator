@@ -99,7 +99,7 @@ class EmployeeResource extends Resource
                 Tables\Columns\ImageColumn::make('image')
                     ->label('Profile Image')
                     ->disk('public')
-                    ->size(100),
+                    ->size(50),
                 Tables\Columns\TextColumn::make('employee_id')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('first_name')
