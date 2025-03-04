@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\LogSheetResource\Pages;
-use App\Filament\Resources\LogSheetResource\RelationManagers;
 use App\Models\LogSheet;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -63,10 +62,9 @@ class LogSheetResource extends Resource
                 //
             ])
             ->actions([
-                // Tables\Actions\EditAction::make(),
                 Tables\Actions\Action::make('view')
                     ->label('View PDF')
-                    ->url(fn($record) => route('log_sheets.view', ['filepath' => $record->filepath])) // Remove urlencode()
+                    ->url(fn($record) => route('log_sheets.view', ['filepath' => $record->filepath]))
                     ->icon('heroicon-o-eye')
                     ->openUrlInNewTab(),
                 Tables\Actions\Action::make('download')
@@ -74,11 +72,6 @@ class LogSheetResource extends Resource
                     ->url(fn($record) => route('log_sheets.download', ['filepath' => $record->filepath]))
                     ->icon('heroicon-o-chevron-down'),
             ]);
-        // ->bulkActions([
-        //     Tables\Actions\BulkActionGroup::make([
-        //         Tables\Actions\DeleteBulkAction::make(),
-        //     ]),
-        // ]);
     }
 
     public static function getRelations(): array
@@ -92,8 +85,6 @@ class LogSheetResource extends Resource
     {
         return [
             'index' => Pages\ListLogSheets::route('/'),
-            // 'create' => Pages\CreateLogSheet::route('/create'),
-            // 'edit' => Pages\EditLogSheet::route('/{record}/edit'),
         ];
     }
 }
