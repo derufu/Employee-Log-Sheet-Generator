@@ -100,7 +100,7 @@ class EmployeeResource extends Resource
                     ->circular()
                     ->size(40) // Adjust the size
                     ->extraAttributes(['loading' => 'lazy']) // Enables lazy loading
-                    ->defaultImageUrl('https://upload.wikimedia.org/wikipedia/commons/6/6a/Seal_of_Davao_City.png'),
+                    ->defaultImageUrl('https://www.davaocity.gov.ph/wp-content/themes/dccustomtheme/public/images/site-logo-2.png'),
                 Tables\Columns\TextColumn::make('employee_id')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('first_name')
