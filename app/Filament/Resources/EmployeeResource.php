@@ -99,7 +99,8 @@ class EmployeeResource extends Resource
                 Tables\Columns\ImageColumn::make('image')
                     ->label('Profile Image')
                     ->disk('public')
-                    ->size(50),
+                    ->size(50) // Set a default size
+                    ->loadingIndicator(true), // Show a loading indicator while the image is loading
                 Tables\Columns\TextColumn::make('employee_id')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('first_name')
