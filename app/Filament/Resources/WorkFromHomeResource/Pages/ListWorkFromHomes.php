@@ -3,7 +3,8 @@
 namespace App\Filament\Resources\WorkFromHomeResource\Pages;
 
 use App\Filament\Resources\WorkFromHomeResource;
-use Filament\Actions;
+use App\Filament\Resources\WorkFromHomeResource\Widgets\WorkFromHomeOverview;
+use Filament\Pages\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class ListWorkFromHomes extends ListRecords
@@ -14,6 +15,13 @@ class ListWorkFromHomes extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+        ];
+    }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            WorkFromHomeOverview::class,
         ];
     }
 }

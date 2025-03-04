@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\LogSheetResource\Pages;
 
 use App\Filament\Resources\LogSheetResource;
+use App\Filament\Resources\LogSheetResource\Widgets\LogSheetOverview;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Dompdf\Dompdf;
@@ -16,6 +17,13 @@ use Illuminate\Support\Facades\Storage;
 class ListLogSheets extends ListRecords
 {
     protected static string $resource = LogSheetResource::class;
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            LogSheetOverview::class,
+        ];
+    }
 
     protected function getHolidays($year)
     {
