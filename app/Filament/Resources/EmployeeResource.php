@@ -97,10 +97,10 @@ class EmployeeResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
-                    ->label('Profile Image')
-                    ->disk('public')
-                    ->size(50) // Set a default size
-                    ->loadingIndicator(true), // Show a loading indicator while the image is loading
+                    ->circular()
+                    ->size(40) // Adjust the size
+                    ->extraAttributes(['loading' => 'lazy']) // Enables lazy loading
+                    ->defaultImageUrl('https://upload.wikimedia.org/wikipedia/commons/6/6a/Seal_of_Davao_City.png'),
                 Tables\Columns\TextColumn::make('employee_id')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('first_name')
