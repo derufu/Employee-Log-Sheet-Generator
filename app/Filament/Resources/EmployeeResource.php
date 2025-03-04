@@ -22,73 +22,80 @@ class EmployeeResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\FileUpload::make('image')
-                    ->label('Profile Image')
-                    ->image()
-                    ->disk('public') // Ensure it uses the correct disk
-                    ->directory('employee-images') // Uploads to storage/app/public/employee-images
-                    ->maxSize(1024) // Limit file size in KB
-                    ->preserveFilenames() // Prevents Livewire renaming issues
-                    ->rules(['image', 'mimes:jpeg,png,jpg,gif', 'max:1024'])
-                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/gif']),
-                Forms\Components\TextInput::make('first_name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('last_name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('middle_name')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('suffix')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('extension_name')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('address')
-                    ->maxLength(255),
-                Forms\Components\DatePicker::make('birthdate')
-                    ->required(),
-                Forms\Components\TextInput::make('employee_id')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('contact_number')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Select::make('gender')
-                    ->options([
-                        'male' => 'Male',
-                        'female' => 'Female',
-                        'other' => 'Other',
-                    ])
-                    ->required(),
-                Forms\Components\Select::make('position_type')
-                    ->options([
-                        'job_order' => 'Job Order',
-                        'coterminous' => 'Coterminous',
-                        'contract_of_service' => 'Contract of Service',
-                        'plantilla' => 'Plantilla',
-                    ])
-                    ->required(),
-                Forms\Components\TextInput::make('position')
-                    ->required(),
-                Forms\Components\Select::make('status')
-                    ->options([
-                        'active' => 'Active',
-                        'inactive' => 'Inactive',
-                    ])
-                    ->required(),
-                Forms\Components\TextInput::make('emergency_contact_name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('emergency_contact_number')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('emergency_address')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\Grid::make(2)->schema([ // Create a grid with 2 columns
+                    Forms\Components\FileUpload::make('image')
+                        ->label('Profile Image')
+                        ->image()
+                        ->disk('public') // Ensure it uses the correct disk
+                        ->directory('employee-images') // Uploads to storage/app/public/employee-images
+                        ->maxSize(1024) // Limit file size in KB
+                        ->preserveFilenames() // Prevents Livewire renaming issues
+                        ->rules(['image', 'mimes:jpeg,png,jpg,gif', 'max:1024'])
+                        ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/gif'])
+                        ->imagePreviewHeight('250') // Set the preview height
+                        ->imageCropAspectRatio('1:1') // Set the crop aspect ratio
+                        ->imageResizeTargetWidth('500') // Set the target width
+                        ->imageResizeTargetHeight('500') // Set the target height
+                        ->columnSpan(2), // Make the image span 2 columns
+                    Forms\Components\TextInput::make('first_name')
+                        ->required()
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('last_name')
+                        ->required()
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('middle_name')
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('suffix')
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('extension_name')
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('address')
+                        ->maxLength(255),
+                    Forms\Components\DatePicker::make('birthdate')
+                        ->required(),
+                    Forms\Components\TextInput::make('employee_id')
+                        ->required()
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('email')
+                        ->email()
+                        ->required()
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('contact_number')
+                        ->required()
+                        ->maxLength(255),
+                    Forms\Components\Select::make('gender')
+                        ->options([
+                            'male' => 'Male',
+                            'female' => 'Female',
+                            'other' => 'Other',
+                        ])
+                        ->required(),
+                    Forms\Components\Select::make('position_type')
+                        ->options([
+                            'job_order' => 'Job Order',
+                            'coterminous' => 'Coterminous',
+                            'contract_of_service' => 'Contract of Service',
+                            'plantilla' => 'Plantilla',
+                        ])
+                        ->required(),
+                    Forms\Components\TextInput::make('position')
+                        ->required(),
+                    Forms\Components\Select::make('status')
+                        ->options([
+                            'active' => 'Active',
+                            'inactive' => 'Inactive',
+                        ])
+                        ->required(),
+                    Forms\Components\TextInput::make('emergency_contact_name')
+                        ->required()
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('emergency_contact_number')
+                        ->required()
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('emergency_address')
+                        ->required()
+                        ->maxLength(255),
+                ]),
             ]);
     }
 
@@ -98,7 +105,7 @@ class EmployeeResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
                     ->circular()
-                    ->size(40) // Adjust the size
+                    ->size(100) // Adjust the size to make it larger
                     ->extraAttributes(['loading' => 'lazy']) // Enables lazy loading
                     ->defaultImageUrl('https://www.davaocity.gov.ph/wp-content/themes/dccustomtheme/public/images/site-logo-2.png'),
                 Tables\Columns\TextColumn::make('employee_id')
