@@ -25,21 +25,31 @@ class WorkFromHomeResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('employee_id')
-                    ->label('Employee')
-                    ->options(function () {
-                        $employees = Employee::all()->pluck('full_name', 'id');
-                        return $employees->prepend('Select All', 'all');
+                Forms\Components\Select::make('employee_ids')
+                    ->label('Employees')
+                    ->multiple()
+                    ->options(function (callable $get) {
+                        return Employee::get()
+                            ->mapWithKeys(function ($employee) {
+                                $middleInitial = $employee->middle_name ? substr($employee->middle_name, 0, 1) . '.' : '';
+                                return [$employee->id => $employee->first_name . ' ' . $middleInitial . ' ' . $employee->last_name];
+                            });
                     })
                     ->required()
                     ->reactive()
-                    ->afterStateUpdated(function ($state, callable $set) {
-                        if ($state === 'all') {
-                            $employeeIds = Employee::all()->pluck('id')->toArray();
-                            $set('employee_id', $employeeIds);
-                        } else {
-                            $set('employee_id', $state);
+                    ->afterStateUpdated(function (callable $set, $state) {
+                        if (in_array('all', $state)) {
+                            $set('employee_ids', Employee::pluck('id')->toArray());
                         }
+                    })
+                    ->placeholder('Select employees or choose "All"')
+                    ->options(function (callable $get) {
+                        $employees = Employee::get()
+                            ->mapWithKeys(function ($employee) {
+                                $middleInitial = $employee->middle_name ? substr($employee->middle_name, 0, 1) . '.' : '';
+                                return [$employee->id => $employee->first_name . ' ' . $middleInitial . ' ' . $employee->last_name];
+                            });
+                        return ['all' => 'All'] + $employees->toArray();
                     }),
                 Forms\Components\DatePicker::make('start_date')
                     ->default(Carbon::now()->toDateString())

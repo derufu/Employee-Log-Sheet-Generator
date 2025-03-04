@@ -4,10 +4,12 @@ namespace App\Filament\Resources\WorkFromHomeResource\Pages;
 
 use App\Filament\Resources\WorkFromHomeResource;
 use App\Models\WorkFromHome;
+use App\Models\Employee;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
 use Illuminate\Validation\ValidationException;
+use Filament\Forms;
 
 class CreateWorkFromHome extends CreateRecord
 {
@@ -15,8 +17,8 @@ class CreateWorkFromHome extends CreateRecord
 
     protected function handleRecordCreation(array $data): Model
     {
-        if (is_array($data['employee_id'])) {
-            foreach ($data['employee_id'] as $employeeId) {
+        if (is_array($data['employee_ids'])) {
+            foreach ($data['employee_ids'] as $employeeId) {
                 WorkFromHome::create([
                     'employee_id' => $employeeId,
                     'start_date' => $data['start_date'],

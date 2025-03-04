@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\LeaveResource\Pages;
+use App\Models\Employee;
 use App\Models\Leave;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -22,9 +23,32 @@ class LeaveResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('employee_id')
-                    ->relationship('employee', 'first_name')
-                    ->required(),
+                Forms\Components\Select::make('employee_ids')
+                    ->label('Employees')
+                    ->multiple()
+                    ->options(function (callable $get) {
+                        return Employee::get()
+                            ->mapWithKeys(function ($employee) {
+                                $middleInitial = $employee->middle_name ? substr($employee->middle_name, 0, 1) . '.' : '';
+                                return [$employee->id => $employee->first_name . ' ' . $middleInitial . ' ' . $employee->last_name];
+                            });
+                    })
+                    ->required()
+                    ->reactive()
+                    ->afterStateUpdated(function (callable $set, $state) {
+                        if (in_array('all', $state)) {
+                            $set('employee_ids', Employee::pluck('id')->toArray());
+                        }
+                    })
+                    ->placeholder('Select employees or choose "All"')
+                    ->options(function (callable $get) {
+                        $employees = Employee::get()
+                            ->mapWithKeys(function ($employee) {
+                                $middleInitial = $employee->middle_name ? substr($employee->middle_name, 0, 1) . '.' : '';
+                                return [$employee->id => $employee->first_name . ' ' . $middleInitial . ' ' . $employee->last_name];
+                            });
+                        return ['all' => 'All'] + $employees->toArray();
+                    }),
                 Forms\Components\DatePicker::make('start_date')
                     ->required(),
                 Forms\Components\DatePicker::make('end_date')
@@ -56,9 +80,9 @@ class LeaveResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('employee.full_name')
-                ->label('Employee')
-                ->sortable()
-                ->searchable(),
+                    ->label('Employee')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('start_date')
                     ->date()
                     ->sortable(),
