@@ -4,19 +4,22 @@ namespace App\Filament\Resources\LogSheetResource\Pages;
 
 use App\Filament\Resources\LogSheetResource;
 use App\Filament\Resources\LogSheetResource\Widgets\LogSheetOverview;
+use App\Models\Employee;
+use App\Models\LogSheet;
+use Carbon\Carbon;
+use Filament\Resources\Pages\Page;
+use Illuminate\Support\Facades\Storage;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Dompdf\Dompdf;
 use Dompdf\Options;
-use App\Models\Employee;
-use App\Models\LogSheet;
-use Carbon\Carbon;
-use Filament\Forms;
-use Illuminate\Support\Facades\Storage;
 
-class ListLogSheets extends ListRecords
+
+class ListLogSheets extends Page
 {
     protected static string $resource = LogSheetResource::class;
+
+    protected static string $view = 'filament.resources.log-sheet-resource.pages.list-log-sheets';
 
     protected function getHeaderWidgets(): array
     {
@@ -75,7 +78,7 @@ class ListLogSheets extends ListRecords
                         ])
                         ->required()
                         ->reactive()
-                        ->afterStateUpdated(fn (callable $set) => $set('employee_ids', [])),
+                        ->afterStateUpdated(fn(callable $set) => $set('employee_ids', [])),
                     Forms\Components\Select::make('employee_ids')
                         ->label('Employees')
                         ->multiple()
