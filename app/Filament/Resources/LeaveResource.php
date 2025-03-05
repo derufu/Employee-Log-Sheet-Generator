@@ -49,7 +49,8 @@ class LeaveResource extends Resource
                                 return [$employee->id => $employee->first_name . ' ' . $middleInitial . ' ' . $employee->last_name];
                             });
                         return ['all' => 'All'] + $employees->toArray();
-                    }),
+                    })
+                    ->columnSpan(2), // Add this line to span 2 columns
                 Forms\Components\DatePicker::make('start_date')
                     ->required()
                     ->rules(['required', 'date']),
