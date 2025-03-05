@@ -15,6 +15,8 @@ class UserProfile extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-user';
     protected static string $view = 'filament.resources.user-resource.pages.user-profile';
+    protected static ?string $navigationGroup = 'User Management';
+
 
     public $name;
     public $email;
