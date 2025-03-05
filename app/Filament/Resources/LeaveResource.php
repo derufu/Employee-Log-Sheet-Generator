@@ -3,12 +3,15 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\LeaveResource\Pages;
+use App\Models\Employee;
 use App\Models\Leave;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Carbon\Carbon;
+use Illuminate\Validation\ValidationException;
 
 class LeaveResource extends Resource
 {
@@ -21,13 +24,41 @@ class LeaveResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('employee_id')
-                    ->relationship('employee', 'first_name')
-                    ->required(),
+                Forms\Components\Select::make('employee_ids')
+                    ->label('Employees')
+                    ->multiple()
+                    ->options(function (callable $get) {
+                        return Employee::get()
+                            ->mapWithKeys(function ($employee) {
+                                $middleInitial = $employee->middle_name ? substr($employee->middle_name, 0, 1) . '.' : '';
+                                return [$employee->id => $employee->first_name . ' ' . $middleInitial . ' ' . $employee->last_name];
+                            });
+                    })
+                    ->required()
+                    ->reactive()
+                    ->afterStateUpdated(function (callable $set, $state) {
+                        if (in_array('all', $state)) {
+                            $set('employee_ids', Employee::pluck('id')->toArray());
+                        }
+                    })
+                    ->placeholder('Select employees or choose "All"')
+                    ->options(function (callable $get) {
+                        $employees = Employee::get()
+                            ->mapWithKeys(function ($employee) {
+                                $middleInitial = $employee->middle_name ? substr($employee->middle_name, 0, 1) . '.' : '';
+                                return [$employee->id => $employee->first_name . ' ' . $middleInitial . ' ' . $employee->last_name];
+                            });
+                        return ['all' => 'All'] + $employees->toArray();
+                    }),
                 Forms\Components\DatePicker::make('start_date')
-                    ->required(),
+                    ->required()
+                    ->rules(['required', 'date']),
+
                 Forms\Components\DatePicker::make('end_date')
-                    ->required(),
+                    ->required()
+                    ->after('start_date')
+                    ->rules(['required', 'date', 'after_or_equal:start_date']),
+
                 Forms\Components\Select::make('type')
                     ->options([
                         'sick' => 'Sick',
@@ -35,11 +66,18 @@ class LeaveResource extends Resource
                         'maternity' => 'Maternity',
                         'paternity' => 'Paternity',
                         'bereavement' => 'Bereavement',
+                        'solo_parent' => 'Solo Parent',
+                        'special_privilege' => 'Special Privilege',
+                        'study' => 'Study',
+                        'rehabilitation' => 'Rehabilitation',
+                        'special_leave_benefits_for_women' => 'Special Leave Benefits for Women',
                         'others' => 'Others',
                     ])
                     ->required(),
+
                 Forms\Components\TextInput::make('reason')
                     ->maxLength(255),
+
                 Forms\Components\Select::make('status')
                     ->options([
                         'pending' => 'Pending',
@@ -47,7 +85,8 @@ class LeaveResource extends Resource
                         'rejected' => 'Rejected',
                     ])
                     ->required(),
-            ]);
+            ])
+            ->statePath('data');
     }
 
     public static function table(Table $table): Table
@@ -55,9 +94,9 @@ class LeaveResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('employee.full_name')
-                ->label('Employee')
-                ->sortable()
-                ->searchable(),
+                    ->label('Employee')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('start_date')
                     ->date()
                     ->sortable(),
@@ -68,31 +107,14 @@ class LeaveResource extends Resource
                 Tables\Columns\TextColumn::make('reason')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array

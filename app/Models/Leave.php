@@ -3,9 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Carbon\Carbon;
+use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\DB;
 
 class Leave extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'employee_id',
         'start_date',
@@ -19,4 +25,5 @@ class Leave extends Model
     {
         return $this->belongsTo(Employee::class);
     }
+
 }
