@@ -175,7 +175,6 @@ class ListLogSheets extends ListRecords
 
                     return response()->download(Storage::disk('public')->path($filePath));
                 })
-                ->icon('heroicon-o-document-text'),
         ];
     }
 }

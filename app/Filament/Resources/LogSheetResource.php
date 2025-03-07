@@ -43,8 +43,6 @@ class LogSheetResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('filename')->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('filepath')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('year')->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('month')->sortable()
@@ -61,6 +59,9 @@ class LogSheetResource extends Resource
             ->filters([
                 //
             ])
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make(),
+            ])
             ->actions([
                 Tables\Actions\Action::make('view')
                     ->label('View PDF')
@@ -71,6 +72,7 @@ class LogSheetResource extends Resource
                     ->label('Download')
                     ->url(fn($record) => route('log_sheets.download', ['filepath' => $record->filepath]))
                     ->icon('heroicon-o-chevron-down'),
+                Tables\Actions\DeleteAction::make(),
             ]);
     }
 

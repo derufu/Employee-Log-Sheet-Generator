@@ -22,45 +22,24 @@ class WorkFromHomeResource extends Resource
 
 
     public static function form(Form $form): Form
-{
-    return $form
-        ->schema([
-            Forms\Components\Select::make('employee_ids')
-                ->label('Employees')
-                ->multiple()
-                ->options(function (callable $get) {
-                    return Employee::get()
-                        ->mapWithKeys(function ($employee) {
-                            $middleInitial = $employee->middle_name ? substr($employee->middle_name, 0, 1) . '.' : '';
-                            return [$employee->id => $employee->first_name . ' ' . $middleInitial . ' ' . $employee->last_name];
-                        });
-                })
-                ->required()
-                ->reactive()
-                ->afterStateUpdated(function (callable $set, $state) {
-                    if (in_array('all', $state)) {
-                        $set('employee_ids', Employee::pluck('id')->toArray());
-                    }
-                })
-                ->placeholder('Select employees or choose "All"')
-                ->options(function (callable $get) {
-                    $employees = Employee::get()
-                        ->mapWithKeys(function ($employee) {
-                            $middleInitial = $employee->middle_name ? substr($employee->middle_name, 0, 1) . '.' : '';
-                            return [$employee->id => $employee->first_name . ' ' . $middleInitial . ' ' . $employee->last_name];
-                        });
-                    return ['all' => 'All'] + $employees->toArray();
-                })
-                ->columnSpan(2), // Add this line to span 2 columns
-            Forms\Components\DatePicker::make('start_date')
-                ->default(Carbon::now()->toDateString())
-                ->required(),
-            Forms\Components\DatePicker::make('end_date')
-                ->required(),
-            Forms\Components\TextInput::make('reason')
-                ->maxLength(255),
-        ]);
-}
+    {
+        return $form
+            ->schema([
+                Forms\Components\Select::make('employee_id')
+                    ->label('Employees')
+                    ->options(Employee::all()->pluck('full_name', 'id'))
+                    ->searchable()
+                    ->preload()
+                    ->columnSpan(2),
+                Forms\Components\DatePicker::make('start_date')
+                    ->default(Carbon::now()->toDateString())
+                    ->required(),
+                Forms\Components\DatePicker::make('end_date')
+                    ->required(),
+                Forms\Components\TextInput::make('reason')
+                    ->maxLength(255),
+            ]);
+    }
 
     public static function table(Table $table): Table
     {

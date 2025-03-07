@@ -143,7 +143,7 @@
                                 }
                             }
                         }
-//
+
                         if ($employee->workFromHomes && !$employee->workFromHomes->isEmpty()) {
                             $workFromHomeDates = $employee->workFromHomes->map(function ($workFromHome) {
                                 return $workFromHome->only(['start_date', 'end_date']);
@@ -189,9 +189,9 @@
                         </td>
                         <td class="center border">
                             @if($isOnLeave)
-                                Leave ({{ $leaveType }})
+                                LEAVE ({{ $leaveType }})
                             @elseif($isWorkFromHome)
-                                Work From Home
+                                WORK FROM HOME
                             @endif
                         </td>
                         <td>
@@ -220,9 +220,9 @@
                         </td>
                         <td class="center border">
                             @if($isOnLeave)
-                                Leave ({{ $leaveType }})
+                                LEAVE ({{ $leaveType }})
                             @elseif($isWorkFromHome)
-                                Work From Home
+                                WORK FROM HOME
                             @endif
                         </td>
                     </tr>
