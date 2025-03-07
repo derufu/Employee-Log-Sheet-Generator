@@ -143,7 +143,7 @@
                                 }
                             }
                         }
-
+//
                         if ($employee->workFromHomes && !$employee->workFromHomes->isEmpty()) {
                             $workFromHomeDates = $employee->workFromHomes->map(function ($workFromHome) {
                                 return $workFromHome->only(['start_date', 'end_date']);
