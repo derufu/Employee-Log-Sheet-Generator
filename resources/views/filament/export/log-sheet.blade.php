@@ -189,9 +189,9 @@
                         </td>
                         <td class="center border">
                             @if($isOnLeave)
-                                LEAVE ({{ $leaveType }})
+                                LEAVE
                             @elseif($isWorkFromHome)
-                                WORK FROM HOME
+                                WFH
                             @endif
                         </td>
                         <td>
@@ -220,9 +220,9 @@
                         </td>
                         <td class="center border">
                             @if($isOnLeave)
-                                LEAVE ({{ $leaveType }})
+                            LEAVE
                             @elseif($isWorkFromHome)
-                                WORK FROM HOME
+                            WFH
                             @endif
                         </td>
                     </tr>
