@@ -126,10 +126,11 @@
                         $employee = $employees[$j];
                         $isOnLeave = false;
                         $isWorkFromHome = false;
+                        $leaveType = '';
 
                         if ($employee->leaves && !$employee->leaves->isEmpty()) {
                             $leaveDates = $employee->leaves->map(function ($leave) {
-                                return $leave->only(['start_date', 'end_date']);
+                                return $leave->only(['start_date', 'end_date', 'type']);
                             });
 
                             foreach ($leaveDates as $index => $date) {
@@ -137,6 +138,7 @@
                                 $endDate = \Carbon\Carbon::parse($date['end_date']);
                                 if (\Carbon\Carbon::parse($weekday)->between($startDate, $endDate)) {
                                     $isOnLeave = true;
+                                    $leaveType = strtoupper($date['type']);
                                     break;
                                 }
                             }
@@ -187,7 +189,7 @@
                         </td>
                         <td class="center border">
                             @if($isOnLeave)
-                                Leave
+                                Leave ({{ $leaveType }})
                             @elseif($isWorkFromHome)
                                 Work From Home
                             @endif
@@ -218,7 +220,7 @@
                         </td>
                         <td class="center border">
                             @if($isOnLeave)
-                                Leave
+                                Leave ({{ $leaveType }})
                             @elseif($isWorkFromHome)
                                 Work From Home
                             @endif

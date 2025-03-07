@@ -140,7 +140,7 @@ class ListLogSheets extends ListRecords
                         }])
                         ->orderBy('last_name', 'asc')
                         ->get();
-
+                    // dd($employees);
                     for ($day = 1; $day <= $numDays; $day++) {
                         $dayOfWeek = date('N', strtotime("$year-$month-$day"));
                         if ($dayOfWeek >= 1 && $dayOfWeek <= 5) {
