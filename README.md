@@ -1,4 +1,4 @@
-# Log Sheet Management System
+# Employee-Log-Sheet-Generator
 
 ## Installation
 
