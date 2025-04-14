@@ -36,7 +36,6 @@ class LeaveResource extends Resource
                     ->rules(['required', 'date']),
                 Forms\Components\DatePicker::make('end_date')
                     ->required()
-                    ->after('start_date')
                     ->rules(['required', 'date', 'after_or_equal:start_date']),
 
                 Forms\Components\Select::make('type')

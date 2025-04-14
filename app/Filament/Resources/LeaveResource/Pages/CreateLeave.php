@@ -19,7 +19,7 @@ class CreateLeave extends CreateRecord
     protected function handleRecordCreation(array $data): Model
     {
         try {
-            if (is_array($data['employee_ids'])) {
+            if (isset($data['employee_ids']) && is_array($data['employee_ids'])) {
                 foreach ($data['employee_ids'] as $employeeId) {
                     Leave::create([
                         'employee_id' => $employeeId,
@@ -62,21 +62,23 @@ class CreateLeave extends CreateRecord
             ]);
         }
 
-        $employee = Employee::find($data['employee_ids']);
-        if (!$employee) {
-            Notification::make()
-                ->title('Error')
-                ->body('Employee not found.')
-                ->danger()
-                ->send();
-            throw ValidationException::withMessages([
-                'employee_ids' => 'Employee not found.',
-            ]);
-        }
+        if (isset($data['employee_ids'])) {
+            $employee = Employee::find($data['employee_ids']);
+            if (!$employee) {
+                Notification::make()
+                    ->title('Error')
+                    ->body('Employee not found.')
+                    ->danger()
+                    ->send();
+                throw ValidationException::withMessages([
+                    'employee_ids' => 'Employee not found.',
+                ]);
+            }
 
-        // Ensure $employee is a single instance, not a collection
-        if (is_array($employee)) {
-            $employee = $employee[0];
+            // Ensure $employee is a single instance, not a collection
+            if (is_array($employee)) {
+                $employee = $employee[0];
+            }
         }
 
         // Calculate the number of days for the leave
