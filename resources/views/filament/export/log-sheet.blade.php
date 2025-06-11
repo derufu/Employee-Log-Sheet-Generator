@@ -241,7 +241,7 @@
                     <p>Attested:</p>
                     <br>
                     <p class="pdf-center">ATTY. J. MELCHOR B. QUITAIN JR.</p>
-                    <p class="pdf-center">City Vice Mayor</p>
+                    <p class="pdf-center">First District City Councilor</p>
                 </th>
             </tr>
         </table>
