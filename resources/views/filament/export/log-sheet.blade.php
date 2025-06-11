@@ -100,7 +100,7 @@
             <p>City of Davao</p>
             <p>OFFICE OF THE SANGGUNIANG PANLUNGSOD</p>
             <p>DAILY ATTENDANCE LOG SHEET</p>
-            <p>Office of Vice Mayor Atty. J. Melchor B. Quitain Jr</p>
+            <p>Office of Atty. J. Melchor B. Quitain Jr.</p>
         </div>
         <div class="content">
             <table>
@@ -241,7 +241,7 @@
                     <p>Attested:</p>
                     <br>
                     <p class="pdf-center">ATTY. J. MELCHOR B. QUITAIN JR.</p>
-                    <p class="pdf-center">First District City Councilor</p>
+                    <p class="pdf-center">1st District City Councilor</p>
                 </th>
             </tr>
         </table>
